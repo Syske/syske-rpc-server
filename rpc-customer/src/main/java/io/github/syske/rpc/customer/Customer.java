@@ -18,11 +18,15 @@ public class Customer {
             String methodName = "sayHello";
             String[] parameters = {"syske"};
             Class<?>[] parameterTypes = {String.class};
-            Socket socket = new Socket("127.0.0.1", 8888);
+            Socket socket = new Socket("127.0.0.1", 8889);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            // 写类名
             objectOutputStream.writeUTF(classFullName);
+            // 写方法名
             objectOutputStream.writeUTF(methodName);
+            // 写参数
             objectOutputStream.writeObject(parameters);
+            // 写参数类型
             objectOutputStream.writeObject(parameterTypes);
             // 读取返回值
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());

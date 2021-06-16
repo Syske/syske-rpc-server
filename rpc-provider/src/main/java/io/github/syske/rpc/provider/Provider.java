@@ -18,8 +18,9 @@ import java.util.Arrays;
 public class Provider {
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(8888);
+            ServerSocket serverSocket = new ServerSocket(8889);
             while (true) {
+                System.out.println("服务提供者已启动，等待连接中……");
                 Socket accept = serverSocket.accept();
                 ObjectInputStream objectInputStream = new ObjectInputStream(accept.getInputStream());
                 // 读取类名
