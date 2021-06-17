@@ -1,5 +1,6 @@
 package io.github.syske.rpc.service;
 
+import io.github.syske.rpc.common.annotation.RpcProvider;
 import io.github.syske.rpc.facade.HelloService;
 
 /**
@@ -8,6 +9,7 @@ import io.github.syske.rpc.facade.HelloService;
  * @author: syske
  * @date: 2021-06-15 19:57
  */
+@RpcProvider
 public class HelloSercieImpl implements HelloService {
     @Override
     public String sayHello(String name) {

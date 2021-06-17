@@ -22,6 +22,12 @@
             <artifactId>rpc-facade</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.syske</groupId>
+            <artifactId>rpc-common-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
