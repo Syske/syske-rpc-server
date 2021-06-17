@@ -47,7 +47,7 @@ public class ClassScanner {
             // 扫描包
             componentScanInit(aClass);
         } catch (Exception e) {
-            logger.error("syske-boot 启动异常：", e);
+            logger.error("ClassScanner init error: ", e);
         }
     }
 

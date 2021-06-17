@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>rpc-provider</module>
-        <module>rpc-customer</module>
+        <module>rpc-consumer</module>
         <module>rpc-common-util</module>
         <module>rpc-facade</module>
     </modules>

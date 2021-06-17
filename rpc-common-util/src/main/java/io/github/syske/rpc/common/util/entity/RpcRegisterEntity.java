@@ -1,7 +1,6 @@
 package io.github.syske.rpc.common.util.entity;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  * 服务注册域对象
@@ -12,71 +11,62 @@ import java.util.Arrays;
  */
 public class RpcRegisterEntity implements Serializable {
     /**
-     * 全类名
+     * 对服务消费者，该值表示调用方全类名；对服务提供者而言，该值表示接口实现全类名
      */
-    private String classFullName;
-    /**
-     * 方法名
-     */
-    private String methodName;
+    private String serviceFullName;
 
     /**
-     * 方法参数列表
+     * 接口Ip
      */
-    private Class<?>[] parameterTypes;
+    private String host;
 
-    private Object newInstance;
+    /**
+     * 接口端口号
+     */
+    private int port;
+
 
     public RpcRegisterEntity() {
     }
 
-    public RpcRegisterEntity(String classFullName, String methodName, Class<?>[] parameterTypes, Object newInstance) {
-        this.classFullName = classFullName;
-        this.methodName = methodName;
-        this.parameterTypes = parameterTypes;
-        this.newInstance = newInstance;
+    public RpcRegisterEntity(String interfaceFullName, String host, int port) {
+        this.serviceFullName = interfaceFullName;
+        this.host = host;
+        this.port = port;
     }
 
-    public String getClassFullName() {
-        return classFullName;
+    public String getServiceFullName() {
+        return serviceFullName;
     }
 
-    public void setClassFullName(String classFullName) {
-        this.classFullName = classFullName;
+    public void setServiceFullName(String serviceFullName) {
+        this.serviceFullName = serviceFullName;
     }
 
-    public String getMethodName() {
-        return methodName;
+    public String getHost() {
+        return host;
     }
 
-    public RpcRegisterEntity  setMethodName(String methodName) {
-        this.methodName = methodName;
+    public RpcRegisterEntity setHost(String host) {
+        this.host = host;
         return this;
     }
 
-    public Class<?>[] getParameterTypes() {
-        return parameterTypes;
+    public int getPort() {
+        return port;
     }
 
-    public RpcRegisterEntity setParameterTypes(Class<?>[] parameterTypes) {
-        this.parameterTypes = parameterTypes;
+    public RpcRegisterEntity setPort(int port) {
+        this.port = port;
         return this;
-    }
-
-    public Object getNewInstance() {
-        return newInstance;
-    }
-
-    public void setNewInstance(Object newInstance) {
-        this.newInstance = newInstance;
     }
 
     @Override
     public String toString() {
         return "RpcRegisterEntity{" +
-                "classFullName='" + classFullName + '\'' +
-                ", methodName='" + methodName + '\'' +
-                ", parameterTypes=" + Arrays.toString(parameterTypes) +
+                "interfaceFullName='" + serviceFullName + '\'' +
+                ", host='" + host + '\'' +
+                ", port=" + port +
                 '}';
     }
 }
