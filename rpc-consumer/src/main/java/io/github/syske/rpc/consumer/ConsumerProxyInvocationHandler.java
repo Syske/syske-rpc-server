@@ -39,7 +39,7 @@ public class ConsumerProxyInvocationHandler implements InvocationHandler {
         String serviceObject = RedisUtil.getObject(String.format(PROVIDER_KEY, interfaceName));
         RpcRegisterEntity rpcRegisterEntity = JSON.parseObject(serviceObject, RpcRegisterEntity.class);
         logger.info("args: {}", Arrays.toString(args));
-        Socket socket = new Socket("127.0.0.1", 8889);
+        Socket socket = new Socket(rpcRegisterEntity.getHost(), rpcRegisterEntity.getPort());
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         // 写接口类名
         objectOutputStream.writeUTF(interfaceName);

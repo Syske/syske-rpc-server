@@ -42,7 +42,7 @@ public class Provider {
             ClassScanner.init(Provider.class);
             initServiceProvider();
             while (true) {
-                System.out.println("服务提供者已启动，等待连接中……");
+                logger.info("服务提供者已启动，等待连接中……");
                 Socket accept = serverSocket.accept();
                 ObjectInputStream objectInputStream = new ObjectInputStream(accept.getInputStream());
                 // 读取类名
@@ -59,7 +59,7 @@ public class Provider {
                 Object invoke = method.invoke(aClass.newInstance(), parameters);
                 // 回写返回值
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(accept.getOutputStream());
-                System.out.println("方法调用结果：" + invoke);
+                logger.info("方法调用结果：" + invoke);
                 objectOutputStream.writeObject(invoke);
             }
         } catch (IOException e) {
