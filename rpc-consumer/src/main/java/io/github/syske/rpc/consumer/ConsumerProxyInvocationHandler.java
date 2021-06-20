@@ -2,6 +2,7 @@ package io.github.syske.rpc.consumer;
 
 import com.alibaba.fastjson.JSON;
 import io.github.syske.rpc.common.util.RedisUtil;
+import io.github.syske.rpc.common.util.ServiceRegisterUtil;
 import io.github.syske.rpc.common.util.entity.RpcRegisterEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,7 @@ public class ConsumerProxyInvocationHandler implements InvocationHandler {
         logger.info("proxy: {}", proxy.getClass().getName());
         logger.info("method: {}", method);
         String interfaceName = serviceClass.getName();
-        String serviceObject = RedisUtil.getObject(String.format(PROVIDER_KEY, interfaceName));
+        String serviceObject = ServiceRegisterUtil.getProviderData(interfaceName);
         RpcRegisterEntity rpcRegisterEntity = JSON.parseObject(serviceObject, RpcRegisterEntity.class);
         logger.info("args: {}", Arrays.toString(args));
         Socket socket = new Socket(rpcRegisterEntity.getHost(), rpcRegisterEntity.getPort());

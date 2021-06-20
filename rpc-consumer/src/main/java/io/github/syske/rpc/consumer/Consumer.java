@@ -15,6 +15,7 @@ import io.github.syske.rpc.common.annotation.RpcConsumer;
 import io.github.syske.rpc.common.proccess.ClassScanner;
 import io.github.syske.rpc.common.proccess.RpcClientContentHandler;
 import io.github.syske.rpc.common.util.RedisUtil;
+import io.github.syske.rpc.common.util.ServiceRegisterUtil;
 import io.github.syske.rpc.common.util.entity.RpcRegisterEntity;
 import io.github.syske.rpc.facade.HelloService;
 import org.slf4j.Logger;
@@ -54,8 +55,8 @@ public class Consumer {
                     Class<?> fieldType = field.getType();
                     String name = fieldType.getName();
                     RpcRegisterEntity rpcRegisterEntity = new RpcRegisterEntity();
-                    rpcRegisterEntity.setHost(host).setServiceFullName(c.getName());
-                    RedisUtil.record2Cache(String.format(CONSUMER_KEY, name), JSON.toJSONString(rpcRegisterEntity));
+                    rpcRegisterEntity.setHost(host).setServiceFullName(name);
+                    ServiceRegisterUtil.registerConsumer(rpcRegisterEntity);
                     Object proxyInstance = getProxyInstance(fieldType);
                     try {
                         Object consumer = c.newInstance();

@@ -19,6 +19,7 @@ import io.github.syske.rpc.common.annotation.RpcComponentScan;
 import io.github.syske.rpc.common.annotation.RpcProvider;
 import io.github.syske.rpc.common.proccess.ClassScanner;
 import io.github.syske.rpc.common.util.RedisUtil;
+import io.github.syske.rpc.common.util.ServiceRegisterUtil;
 import io.github.syske.rpc.common.util.entity.RpcRegisterEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,11 +84,10 @@ public class Provider {
         classSet.forEach(c -> {
             Annotation annotation = c.getAnnotation(RpcProvider.class);
             if (Objects.nonNull(annotation)) {
-                RpcRegisterEntity rpcRegisterEntity = new RpcRegisterEntity(c.getName(), host, port);
                 Class[] interfaces = c.getInterfaces();
                 String interfaceName = interfaces[0].getName();
-                RedisUtil.record2Cache(String.format(PROVIDER_KEY, interfaceName),
-                    JSON.toJSONString(rpcRegisterEntity));
+                RpcRegisterEntity rpcRegisterEntity = new RpcRegisterEntity(interfaceName, host, port);
+                ServiceRegisterUtil.registerProvider(rpcRegisterEntity);
                 logger.info(JSON.toJSONString(rpcRegisterEntity));
             }
         });
