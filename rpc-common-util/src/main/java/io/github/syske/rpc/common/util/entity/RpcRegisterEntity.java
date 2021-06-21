@@ -13,7 +13,7 @@ public class RpcRegisterEntity implements Serializable {
     /**
      * 对服务消费者，该值表示调用方全类名；对服务提供者而言，该值表示接口实现全类名
      */
-    private String serviceFullName;
+    private String interaceClassFullName;
 
     /**
      * 接口Ip
@@ -25,22 +25,24 @@ public class RpcRegisterEntity implements Serializable {
      */
     private int port;
 
+    private String serviceImplClassFullName;
+
 
     public RpcRegisterEntity() {
     }
 
     public RpcRegisterEntity(String interfaceFullName, String host, int port) {
-        this.serviceFullName = interfaceFullName;
+        this.interaceClassFullName = interfaceFullName;
         this.host = host;
         this.port = port;
     }
 
-    public String getServiceFullName() {
-        return serviceFullName;
+    public String getInteraceClassFullName() {
+        return interaceClassFullName;
     }
 
-    public void setServiceFullName(String serviceFullName) {
-        this.serviceFullName = serviceFullName;
+    public void setInteraceClassFullName(String interaceClassFullName) {
+        this.interaceClassFullName = interaceClassFullName;
     }
 
     public String getHost() {
@@ -61,10 +63,19 @@ public class RpcRegisterEntity implements Serializable {
         return this;
     }
 
+    public String getServiceImplClassFullName() {
+        return serviceImplClassFullName;
+    }
+
+    public RpcRegisterEntity setServiceImplClassFullName(String serviceImplClassFullName) {
+        this.serviceImplClassFullName = serviceImplClassFullName;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "RpcRegisterEntity{" +
-                "interfaceFullName='" + serviceFullName + '\'' +
+                "interfaceFullName='" + interaceClassFullName + '\'' +
                 ", host='" + host + '\'' +
                 ", port=" + port +
                 '}';

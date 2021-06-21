@@ -22,7 +22,6 @@ import java.util.Arrays;
  */
 public class ConsumerProxyInvocationHandler implements InvocationHandler {
     private final Logger logger = LoggerFactory.getLogger(ConsumerProxyInvocationHandler.class);
-    private final String PROVIDER_KEY = "%s:provider";
     /**
      * 代理类的class
      */
@@ -34,12 +33,13 @@ public class ConsumerProxyInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        logger.info("proxy: {}", proxy.getClass().getName());
-        logger.info("method: {}", method);
+//        logger.info("proxy: {}", proxy.getClass().getName());
+//        logger.info("method: {}", method);
         String interfaceName = serviceClass.getName();
         String serviceObject = ServiceRegisterUtil.getProviderData(interfaceName);
         RpcRegisterEntity rpcRegisterEntity = JSON.parseObject(serviceObject, RpcRegisterEntity.class);
         logger.info("args: {}", Arrays.toString(args));
+        logger.info("建立socket连接: {}:{}", rpcRegisterEntity.getHost(), rpcRegisterEntity.getPort());
         Socket socket = new Socket(rpcRegisterEntity.getHost(), rpcRegisterEntity.getPort());
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         // 写接口类名

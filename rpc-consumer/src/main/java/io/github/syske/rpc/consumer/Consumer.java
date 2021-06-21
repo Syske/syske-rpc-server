@@ -8,13 +8,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import com.alibaba.fastjson.JSON;
 import io.github.syske.rpc.common.annotation.RpcClient;
 import io.github.syske.rpc.common.annotation.RpcComponentScan;
 import io.github.syske.rpc.common.annotation.RpcConsumer;
 import io.github.syske.rpc.common.proccess.ClassScanner;
 import io.github.syske.rpc.common.proccess.RpcClientContentHandler;
-import io.github.syske.rpc.common.util.RedisUtil;
 import io.github.syske.rpc.common.util.ServiceRegisterUtil;
 import io.github.syske.rpc.common.util.entity.RpcRegisterEntity;
 import io.github.syske.rpc.facade.HelloService;
@@ -34,7 +32,7 @@ public class Consumer {
     @RpcClient
     private HelloService helloService;
 
-    public static void main(String[] args) throws UnknownHostException, InterruptedException {
+    public static void main(String[] args) throws UnknownHostException {
         initServiceConsumer();
         Map<Class, Object> rpcClientContentMap = RpcClientContentHandler.getRpcClientContentMap();
         Consumer consumer = (Consumer)rpcClientContentMap.get(Consumer.class);
@@ -43,7 +41,6 @@ public class Consumer {
     }
 
     private static void initServiceConsumer() throws UnknownHostException {
-        final String CONSUMER_KEY = "%s:consumer";
         ClassScanner.init(Consumer.class);
         Set<Class> classSet = ClassScanner.getClassSet();
         String host = InetAddress.getLocalHost().getHostAddress();
@@ -55,7 +52,7 @@ public class Consumer {
                     Class<?> fieldType = field.getType();
                     String name = fieldType.getName();
                     RpcRegisterEntity rpcRegisterEntity = new RpcRegisterEntity();
-                    rpcRegisterEntity.setHost(host).setServiceFullName(name);
+                    rpcRegisterEntity.setHost(host).setInteraceClassFullName(name);
                     ServiceRegisterUtil.registerConsumer(rpcRegisterEntity);
                     Object proxyInstance = getProxyInstance(fieldType);
                     try {

@@ -1,5 +1,14 @@
 package io.github.syske.rpc.provider;
 
+import com.alibaba.fastjson.JSON;
+import io.github.syske.rpc.common.annotation.RpcComponentScan;
+import io.github.syske.rpc.common.annotation.RpcProvider;
+import io.github.syske.rpc.common.proccess.ClassScanner;
+import io.github.syske.rpc.common.util.ServiceRegisterUtil;
+import io.github.syske.rpc.common.util.entity.RpcRegisterEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,17 +22,6 @@ import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.Set;
 
-import com.alibaba.fastjson.JSON;
-
-import io.github.syske.rpc.common.annotation.RpcComponentScan;
-import io.github.syske.rpc.common.annotation.RpcProvider;
-import io.github.syske.rpc.common.proccess.ClassScanner;
-import io.github.syske.rpc.common.util.RedisUtil;
-import io.github.syske.rpc.common.util.ServiceRegisterUtil;
-import io.github.syske.rpc.common.util.entity.RpcRegisterEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @program: syske-rpc-server
  * @description: 服务提供者
@@ -33,8 +31,7 @@ import org.slf4j.LoggerFactory;
 @RpcComponentScan("io.github.syske.rpc.service")
 public class Provider {
     private static final Logger logger = LoggerFactory.getLogger(Provider.class);
-    private static final String PROVIDER_KEY = "%s:provider";
-    private static final int port = 8889;
+    private static final int port = 9999;
 
     public static void main(String[] args) {
         try {
@@ -53,9 +50,9 @@ public class Provider {
                 Class<?>[] parameterTypes = ( Class<?>[])objectInputStream.readObject();
                 // 读取方法调用入参
                 Object[] parameters = (Object[])objectInputStream.readObject();
-                String serviceObject = RedisUtil.getObject(String.format(PROVIDER_KEY, interfaceName));
+                String serviceObject = ServiceRegisterUtil.getProviderData(interfaceName);
                 RpcRegisterEntity rpcRegisterEntity = JSON.parseObject(serviceObject, RpcRegisterEntity.class);
-                Class<?> aClass = Class.forName(rpcRegisterEntity.getServiceFullName());
+                Class<?> aClass = Class.forName(rpcRegisterEntity.getServiceImplClassFullName());
                 Method method = aClass.getMethod(methodName, parameterTypes);
                 Object invoke = method.invoke(aClass.newInstance(), parameters);
                 // 回写返回值
@@ -86,7 +83,7 @@ public class Provider {
             if (Objects.nonNull(annotation)) {
                 Class[] interfaces = c.getInterfaces();
                 String interfaceName = interfaces[0].getName();
-                RpcRegisterEntity rpcRegisterEntity = new RpcRegisterEntity(interfaceName, host, port);
+                RpcRegisterEntity rpcRegisterEntity = new RpcRegisterEntity(interfaceName, host, port).setServiceImplClassFullName(c.getName());
                 ServiceRegisterUtil.registerProvider(rpcRegisterEntity);
                 logger.info(JSON.toJSONString(rpcRegisterEntity));
             }
