@@ -37,7 +37,7 @@ public class Consumer {
         Map<Class, Object> rpcClientContentMap = RpcClientContentHandler.getRpcClientContentMap();
         Consumer consumer = (Consumer)rpcClientContentMap.get(Consumer.class);
         String syske = consumer.helloService.sayHello("syske");
-        logger.info("消费者远程调用返回结果：" + syske);
+        logger.info("消费者远程调用返回结果：{}", syske);
     }
 
     private static void initServiceConsumer() throws UnknownHostException {

@@ -19,6 +19,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 
@@ -51,13 +52,14 @@ public class Provider {
                 // 读取方法调用入参
                 Object[] parameters = (Object[])objectInputStream.readObject();
                 String serviceObject = ServiceRegisterUtil.getProviderData(interfaceName);
+                logger.info("方法信息：接口名称 = {}，方法名={}，参数列表 = {}，入参 = {}", interfaceName, methodName, Arrays.toString(parameterTypes), Arrays.toString(parameters));
                 RpcRegisterEntity rpcRegisterEntity = JSON.parseObject(serviceObject, RpcRegisterEntity.class);
                 Class<?> aClass = Class.forName(rpcRegisterEntity.getServiceImplClassFullName());
                 Method method = aClass.getMethod(methodName, parameterTypes);
                 Object invoke = method.invoke(aClass.newInstance(), parameters);
                 // 回写返回值
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(accept.getOutputStream());
-                logger.info("方法调用结果：" + invoke);
+                logger.info("方法调用结果：{}", invoke);
                 objectOutputStream.writeObject(invoke);
             }
         } catch (IOException e) {

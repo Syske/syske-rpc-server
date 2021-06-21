@@ -24,7 +24,9 @@ public class RpcRegisterEntity implements Serializable {
      * 接口端口号
      */
     private int port;
-
+    /**
+     * 服务提供者实现类名
+     */
     private String serviceImplClassFullName;
 
 
